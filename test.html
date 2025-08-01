@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myself</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            font-weight: bold;
+        }
+
+        .name {
+            display: block;
+            margin-bottom: 10px; /* Space between [NAME] and "I'm" */
+            font-size: 8vw;
+        }
+
+        .im-text {
+            display: inline-block;
+            font-size: 4vw;
+        }
+
+        .dynamic-text-container {
+            display: inline-block;
+            overflow: hidden; /* Hide overflow to prevent overlapping */
+            vertical-align: top; /* Align with the rest of the text */
+        }
+
+        #dynamic-text {
+            display: inline-block;
+            white-space: nowrap; /* Prevent text from wrapping */
+            transform: translateX(100%); /* Start off-screen to the right */
+            opacity: 0;
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Slower animation (1s) */
+        }
+
+        #dynamic-text.pan-in {
+            transform: translateX(0); /* Move to the center */
+            opacity: 1; /* Fade in */
+        }
+
+        #dynamic-text.pan-out {
+            transform: translateX(-100%); /* Move off-screen to the left */
+            opacity: 0; /* Fade out */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="name">Lee Jun Heng</span>
+        <span class="im-text">I'm <span class="dynamic-text-container"><span id="dynamic-text"></span></span></span>
+    </div>
+
+    <script>
+        const textList = [
+            "a NUS Information Security Student",
+            "a Software Developer",
+            "an Electronics and Computer Engineer",
+            "a KPOP lover",
+            "a tea enthusiast"
+        ];
+        let index = 0;
+        const dynamicTextElement = document.getElementById("dynamic-text");
+        
+        function updateText() {
+            // Pan out the current text
+            dynamicTextElement.classList.remove("pan-in");
+            dynamicTextElement.classList.add("pan-out");
+
+            // Wait for the pan-out animation to finish
+            setTimeout(() => {
+                // Update the text
+                dynamicTextElement.textContent = textList[index];
+                index = (index + 1) % textList.length;
+
+                // Pan in the new text
+                dynamicTextElement.classList.remove("pan-out");
+                dynamicTextElement.classList.add("pan-in");
+            }, 500); // Wait for 1s (pan-out duration)
+        }
+        
+        updateText();
+        setInterval(updateText, 3000);
+    </script>
+</body>
+</html>
