@@ -1,0 +1,62 @@
+name: Build and deploy to main
+
+# Source lives on `dev`. Every push to `dev` builds the SPA and publishes the
+# static output to `main`, which GitHub Pages serves. The trigger is `dev` and
+# the target is `main`, so there is no build loop.
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+# Allow the job to push the built site to the `main` branch.
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source (dev)
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build SPA
+        # User/org pages (<user>.github.io) serve from the root, so base is "/".
+        # Project pages serve from /<repo>/. vite.config.js reads VITE_BASE.
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          if [[ "$REPO_NAME" == *.github.io ]]; then
+            export VITE_BASE="/"
+          else
+            export VITE_BASE="/$REPO_NAME/"
+          fi
+          echo "Building with base $VITE_BASE"
+          npm run build
+
+      - name: Add SPA fallback for client-side routing
+        # GitHub Pages returns 404.html for unknown paths; serving the SPA there
+        # lets deep links / client-side routes resolve.
+        run: cp dist/index.html dist/404.html
+
+      - name: Publish to main
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: main
+          # Replace main entirely with the built output (single-commit history,
+          # adds .nojekyll automatically).
+          force_orphan: true
