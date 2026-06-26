@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Header({ onToggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
+
+  // Dismiss the dropdown when clicking anywhere outside it (the hamburger
+  // toggles itself, and links/toggle inside the menu are left alone).
+  useEffect(() => {
+    if (!menuOpen) return;
+    function onDocClick(e) {
+      if (e.target.closest(".mobile-menu") || e.target.closest(".hamburger")) {
+        return;
+      }
+      setMenuOpen(false);
+    }
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
+  }, [menuOpen]);
 
   return (
     <header className="site-header">

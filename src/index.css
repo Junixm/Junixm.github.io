@@ -1101,12 +1101,15 @@ body {
   .section {
     /* Extra bottom padding so content and the down-arrow clear the fixed
        footer that overlays the bottom of the viewport. */
-    padding: 100px 20px 104px;
+    padding: 100px 20px 128px;
   }
   .section-title {
     font-size: 2rem;
   }
   .site-header {
     padding: 0 20px;
+  }
+  .site-footer {
+    padding: 16px 20px 14px;
   }
 }
