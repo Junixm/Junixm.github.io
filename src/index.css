@@ -30,6 +30,7 @@
   --icon-filter: invert(1) brightness(1.6);
   --tag-bg: rgba(138, 43, 226, 0.22);
   --tag-text: var(--purple-light);
+  --menu-bg: rgba(8, 8, 16, 0.95);
 }
 
 /* Light mode tokens */
@@ -46,6 +47,7 @@
   --icon-filter: none;
   --tag-bg: rgba(138, 43, 226, 0.16);
   --tag-text: #5e1ba6;
+  --menu-bg: rgba(240, 237, 252, 0.97);
 }
 
 /* ── Base ── */
@@ -255,11 +257,114 @@ body {
   height: 100%;
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 16px;
 }
 
 .header-inner .logo {
   margin-right: auto;
+}
+
+/* ── Hamburger (mobile only) ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text);
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease,
+    background var(--transition);
+}
+
+.hamburger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── Mobile dropdown menu ── */
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 20px;
+  width: 200px;
+  flex-direction: column;
+  background: var(--menu-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  transform-origin: top right;
+  pointer-events: none;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.mobile-menu.is-open {
+  max-height: 260px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.mobile-menu a:first-child {
+  border-top: none;
+}
+
+.mobile-menu a {
+  padding: 16px 24px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+  text-decoration: none;
+  border-top: 1px solid var(--border);
+  transition: background 0.2s;
+}
+
+.mobile-menu a:active {
+  background: var(--btn-bg);
+}
+
+.mobile-menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.mobile-menu-toggle span {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
 }
 
 .logo {
@@ -313,9 +418,20 @@ body {
   transform: scaleX(1);
 }
 
-@media (max-width: 640px) {
+/* Below 800px, collapse the inline nav + toggle into the hamburger menu. */
+@media (max-width: 800px) {
   .nav-links {
     display: none;
+  }
+  /* Hide the header toggle — it moves into the dropdown. */
+  .header-inner > .theme-toggle {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .mobile-menu {
+    display: flex;
   }
 }
 
@@ -595,7 +711,7 @@ body {
 
 /* ── Scroll cue (animated) ── */
 .scroll-cue {
-  margin: 56px auto 16px;
+  margin: 56px auto 24px;
   width: 64px;
   height: 46px;
   border: 2px solid var(--border);
@@ -973,11 +1089,19 @@ body {
   .skills {
     justify-content: center;
   }
+  /* Top-align the tall content sections so their heading clears the fixed
+     header instead of being centered up underneath it. */
+  .about,
+  .projects {
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 480px) {
   .section {
-    padding: 100px 20px 72px;
+    /* Extra bottom padding so content and the down-arrow clear the fixed
+       footer that overlays the bottom of the viewport. */
+    padding: 100px 20px 104px;
   }
   .section-title {
     font-size: 2rem;

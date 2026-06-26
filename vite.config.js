@@ -9,4 +9,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: process.env.VITE_BASE || '/',
   plugins: [react()],
+  build: {
+    // Keep classic `@media (max-width: …)` syntax instead of the modern
+    // `(width <= …)` range form, which some browsers don't apply.
+    cssTarget: ['chrome80', 'firefox80', 'safari14'],
+  },
 })
