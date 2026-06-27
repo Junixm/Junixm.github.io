@@ -1,0 +1,58 @@
+# Blank skeleton for content.yaml — every supported field is shown.
+# Copy the parts you need into content.yaml. See the README ("Editing content")
+# for what each field does.
+
+hero:
+  eyebrow: Short line above the headline
+  name: Your Name # rendered as "Hi, I'm <name>"
+  tagline: One-sentence summary of what you do.
+  cta_label: View My Work
+  cta_href: "#projects"
+  github: https://github.com/your-handle
+  linkedin: https://www.linkedin.com/in/your-handle
+
+about:
+  profile_pic: /images/me.png # file under public/images/
+  profile_alt: Your Name
+  paragraphs:
+    - First intro paragraph.
+    - Second intro paragraph.
+  github_username: your-handle
+  contributions_chart: https://ghchart.rshah.org/8a2be2/your-handle
+  tags:
+    - Skill One
+    - Skill Two
+  cards:
+    - title: Education
+      items:
+        - head: Degree or qualification # required
+          meta: # optional two-sided row
+            left: Institution
+            right: Year
+    - title: Certifications
+      items:
+        - head: Certificate name
+          sub: Issuer / short note # optional muted line
+          meta: # optional two-sided row
+            left: Left text
+            right: Right text
+          href: https://link-to-credential # optional — makes head a link
+
+projects:
+  - title: Project With Image
+    image: https://example.com/screenshot.png # optional
+    description: What the project is and your role.
+    link: https://github.com/you/repo
+    link_label: GitHub Repo
+  - title: Project Without Image
+    label: Placeholder Text # shown when image is omitted
+    description: What the project is and your role.
+    link: https://github.com/you/repo
+    link_label: Writeup
+
+contact:
+  title: Let's Connect
+  lead: One or two sentences inviting people to reach out.
+  email: mailto:you@example.com
+  github: https://github.com/your-handle
+  linkedin: https://www.linkedin.com/in/your-handle

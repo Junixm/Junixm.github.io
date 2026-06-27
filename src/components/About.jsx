@@ -1,66 +1,7 @@
 import Section from "./Section";
+import { about } from "../content";
 
-const skills = [
-  "Computer Security",
-  "Cloud Security",
-  "Web Security",
-  "Penetration Testing",
-  "Risk Assessment",
-  "Metasploit",
-];
-
-const infoCards = [
-  {
-    title: "Education",
-    items: [
-      {
-        head: "Bachelor of Computing in Information Security",
-        meta: { school: "National University of Singapore", year: "May 2027" },
-      },
-      {
-        head: "Diploma in Electronic and Computer Engineering",
-        meta: { school: "Ngee Ann Polytechnic", year: "2021" },
-      },
-      {
-        head: "Diploma Plus in Advanced Engineering Mathematics",
-        meta: { school: "Ngee Ann Polytechnic", year: "2021" },
-      },
-    ],
-  },
-  {
-    title: "Key Modules",
-    items: [
-      { head: "IFS4103 — Penetration Testing Practice" },
-      { head: "IS4231 — Information Security Management" },
-      { head: "IFS4205 — Information Security Capstone Project" },
-      { head: "CS4238 — Computer Security Practice" },
-      { head: "CS3235 — Computer Security" },
-    ],
-  },
-  {
-    title: "CTF Participation",
-    items: [
-      { head: "DSTA BrainHack 2025 — CDDC", sub: "Participated" },
-      { head: "NUS Greyhats WelcomeCTF 2025", sub: "Participated" },
-      { head: "CSIT TISC 2025", sub: "Participated" },
-    ],
-  },
-  {
-    title: "Certifications | Badges",
-    items: [
-      {
-        head: "Cloud Foundations",
-        sub: "AWS Academy Graduate — Training Badge",
-        href: "https://www.credly.com/badges/dbca4fcb-94b1-411b-94af-74367c71ec96",
-      },
-      {
-        head: "Cloud Security Foundations",
-        sub: "AWS Academy Graduate — Training Badge",
-        href: "https://www.credly.com/badges/bcc1b9d1-ee46-4fcb-a380-ce720c269e52",
-      },
-    ],
-  },
-];
+const { tags: skills, cards: infoCards } = about;
 
 export default function About() {
   return (
@@ -70,19 +11,12 @@ export default function About() {
       <div className="about-intro">
         <div className="about-image">
           <span className="about-image-ring"></span>
-          <img src="/images/me.png" alt="Jun Heng" />
+          <img src={about.profile_pic} alt={about.profile_alt} />
         </div>
         <div className="about-text">
-          <p>
-            I'm an information security student passionate about protecting
-            digital systems and understanding cybersecurity threats. I'm
-            developing expertise in ethical hacking, network security, and
-            secure system design.
-          </p>
-          <p>
-            Beyond academics, I have a keen interest in perfumes, tea, cafe
-            hopping, K-pop, and photography.
-          </p>
+          {about.paragraphs.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
           <div className="skills">
             {skills.map((s) => (
               <span key={s} className="skill-tag">
@@ -96,7 +30,7 @@ export default function About() {
       <div className="contributions">
         <h3>GitHub Contributions</h3>
         <img
-          src="https://ghchart.rshah.org/8a2be2/junixm"
+          src={about.contributions_chart}
           alt="GitHub Contribution Chart"
         />
       </div>
@@ -135,9 +69,9 @@ export default function About() {
                       <span key={si}>{s}</span>
                     ))}
                     {item.meta && (
-                      <span className="school-row">
-                        <span>{item.meta.school}</span>
-                        <span>{item.meta.year}</span>
+                      <span className="meta-row">
+                        <span>{item.meta.left}</span>
+                        <span>{item.meta.right}</span>
                       </span>
                     )}
                   </li>

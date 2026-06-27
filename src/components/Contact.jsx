@@ -1,19 +1,17 @@
 import Section from "./Section";
+import { contact } from "../content";
 
 export default function Contact() {
   return (
     <Section id="contact" className="contact" variant="scale">
-      <h2 className="section-title">Let's Connect</h2>
-      <p className="contact-lead">
-        I'm always interested in discussing cybersecurity topics, collaborating
-        on security projects, or exploring internship opportunities.
-      </p>
+      <h2 className="section-title">{contact.title}</h2>
+      <p className="contact-lead">{contact.lead}</p>
       <div className="social-links">
-        <a href="mailto:leejunheng2001@gmail.com" className="social-link">
+        <a href={contact.email} className="social-link">
           Email Me
         </a>
         <a
-          href="https://github.com/junixm"
+          href={contact.github}
           className="social-link"
           target="_blank"
           rel="noopener noreferrer"
@@ -21,7 +19,7 @@ export default function Contact() {
           GitHub
         </a>
         <a
-          href="https://www.linkedin.com/in/lee-jun-heng-250750169"
+          href={contact.linkedin}
           className="social-link"
           target="_blank"
           rel="noopener noreferrer"

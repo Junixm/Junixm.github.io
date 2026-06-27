@@ -1,22 +1,20 @@
 import Section from "./Section";
+import { hero } from "../content";
 
 export default function Hero() {
   return (
     <Section id="home" className="hero" variant="up">
-      <p className="hero-eyebrow">Information Security Student @ NUS</p>
+      <p className="hero-eyebrow">{hero.eyebrow}</p>
       <h1 className="hero-title">
-        Hi, I'm <span className="accent">Jun Heng</span>
+        Hi, I'm <span className="accent">{hero.name}</span>
       </h1>
-      <p className="hero-tagline">
-        Securing digital systems — ethical hacking, cloud security and secure
-        design.
-      </p>
+      <p className="hero-tagline">{hero.tagline}</p>
       <div className="hero-actions">
-        <a href="#projects" className="cta-button">
-          View My Work
+        <a href={hero.cta_href} className="cta-button">
+          {hero.cta_label}
         </a>
         <a
-          href="https://github.com/junixm"
+          href={hero.github}
           className="icon-button"
           target="_blank"
           rel="noopener noreferrer"
@@ -25,7 +23,7 @@ export default function Hero() {
           <img src="/images/github-mark.svg" alt="" />
         </a>
         <a
-          href="https://www.linkedin.com/in/lee-jun-heng-250750169"
+          href={hero.linkedin}
           className="icon-button"
           target="_blank"
           rel="noopener noreferrer"

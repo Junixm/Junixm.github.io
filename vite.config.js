@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import yaml from '@rollup/plugin-yaml'
 
 // GitHub Pages serves a project site from https://<user>.github.io/<repo>/,
 // so the app must be built with a matching base path. Override with the
@@ -8,7 +9,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   base: process.env.VITE_BASE || '/',
-  plugins: [react()],
+  plugins: [react(), yaml()],
   build: {
     // Keep classic `@media (max-width: …)` syntax instead of the modern
     // `(width <= …)` range form, which some browsers don't apply.
