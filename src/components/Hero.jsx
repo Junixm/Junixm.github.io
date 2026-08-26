@@ -31,6 +31,14 @@ export default function Hero() {
         >
           <img src="/images/InBug-Black.png" alt="" />
         </a>
+        <a
+          href="/sub-tiles/"
+          className="secondary-button"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Play Sub-Tiles
+        </a>
       </div>
       <a href="#about" className="scroll-cue" aria-label="Scroll to about">
         <span></span>

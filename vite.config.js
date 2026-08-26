@@ -1,3 +1,4 @@
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import yaml from '@rollup/plugin-yaml'
@@ -14,5 +15,16 @@ export default defineConfig({
     // Keep classic `@media (max-width: …)` syntax instead of the modern
     // `(width <= …)` range form, which some browsers don't apply.
     cssTarget: ['chrome80', 'firefox80', 'safari14'],
+    rollupOptions: {
+      // Multi-page build: the portfolio at "/" plus the standalone
+      // Sub-Tiles app at "/sub-tiles/", built as its own bundle so it
+      // stays self-contained under sub-tiles/ (own src, own CSS).
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        subtiles: resolve(__dirname, 'sub-tiles/index.html'),
+        // Redirect stub for "/sub-tiles" (no trailing slash) -> "/sub-tiles/".
+        subtilesRedirect: resolve(__dirname, 'sub-tiles.html'),
+      },
+    },
   },
 })

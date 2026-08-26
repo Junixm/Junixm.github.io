@@ -30,6 +30,9 @@ export default function Header({ onToggleTheme }) {
           <a href="#about">About</a>
           <a href="#projects">Projects</a>
           <a href="#contact">Contact</a>
+          <a href="/sub-tiles/" target="_blank" rel="noopener noreferrer">
+            Sub-Tiles
+          </a>
         </nav>
 
         {/* Theme toggle in the header on desktop */}
@@ -58,6 +61,9 @@ export default function Header({ onToggleTheme }) {
         </a>
         <a href="#contact" onClick={closeMenu}>
           Contact
+        </a>
+        <a href="/sub-tiles/" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
+          Sub-Tiles
         </a>
         <div className="mobile-menu-toggle">
           <span>Theme</span>

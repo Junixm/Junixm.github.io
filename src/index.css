@@ -709,6 +709,28 @@ body {
   filter: var(--icon-filter);
 }
 
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 28px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+  text-decoration: none;
+  background: var(--btn-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition:
+    transform 0.25s,
+    background var(--transition);
+}
+
+.secondary-button:hover {
+  transform: translateY(-3px);
+  background: var(--btn-hover-bg);
+}
+
 /* ── Scroll cue (animated) ── */
 .scroll-cue {
   margin: 56px auto 24px;

@@ -98,6 +98,15 @@ projects:
           (Nmap), privilege escalation, and SQL injection.
       link: https://github.com/Junixm/CS4238
       link_label: Writeup
+    - title: Sub-Tiles
+      image: /images/sub-tiles.png
+      description: >-
+          A browser recreation of Jane Street's Subtiles logic puzzle — place
+          connected, nested polyominoes on a 13×13 grid so each shape contains
+          the one before it. Built with React, with drag-to-place tiles,
+          solution validation, and autosaved progress.
+      link: /sub-tiles/
+      link_label: Play Now
 
 contact:
     title: Let's Connect
