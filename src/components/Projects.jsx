@@ -15,14 +15,17 @@ export default function Projects() {
               <h3>{p.title}</h3>
               <p>{p.description}</p>
               <div className="project-links">
-                <a
-                  href={p.link}
-                  className="project-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {p.link_label}
-                </a>
+                {p.links.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="project-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.label}
+                  </a>
+                ))}
               </div>
             </div>
           </article>

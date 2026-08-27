@@ -32,7 +32,7 @@ export default function Hero() {
           <img src="/images/InBug-Black.png" alt="" />
         </a>
         <a
-          href="/sub-tiles/"
+          href="/sub-tiles"
           className="secondary-button"
           target="_blank"
           rel="noopener noreferrer"

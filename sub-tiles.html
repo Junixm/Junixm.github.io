@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sub-Tiles</title>
-<!-- Redirects "/sub-tiles" (no trailing slash) to "/sub-tiles/", whose
-     index.html is the actual app. Relative URL so it works under any
-     base path (root or GitHub Pages project subpath) unchanged. -->
-<meta http-equiv="refresh" content="0; url=sub-tiles/">
+<link rel="icon" type="image/svg+xml" href="/subtiles-favicon.svg">
 </head>
 <body>
-<p><a href="sub-tiles/">Continue to Sub-Tiles</a></p>
+<div id="root"></div><script type="module" src="/sub-tiles/src/main.jsx"></script>
 </body>
 </html>

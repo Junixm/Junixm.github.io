@@ -1009,6 +1009,9 @@ body {
 
 .project-links {
   margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .project-link {

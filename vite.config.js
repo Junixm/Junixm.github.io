@@ -17,13 +17,12 @@ export default defineConfig({
     cssTarget: ['chrome80', 'firefox80', 'safari14'],
     rollupOptions: {
       // Multi-page build: the portfolio at "/" plus the standalone
-      // Sub-Tiles app at "/sub-tiles/", built as its own bundle so it
-      // stays self-contained under sub-tiles/ (own src, own CSS).
+      // Sub-Tiles app at "/sub-tiles" (its HTML entry lives at the repo
+      // root so GitHub Pages serves it directly with no redirect; its
+      // source stays self-contained under sub-tiles/ -- own src, own CSS).
       input: {
         main: resolve(__dirname, 'index.html'),
-        subtiles: resolve(__dirname, 'sub-tiles/index.html'),
-        // Redirect stub for "/sub-tiles" (no trailing slash) -> "/sub-tiles/".
-        subtilesRedirect: resolve(__dirname, 'sub-tiles.html'),
+        subtiles: resolve(__dirname, 'sub-tiles.html'),
       },
     },
   },
