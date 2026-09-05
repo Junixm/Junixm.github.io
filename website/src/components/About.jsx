@@ -27,14 +27,6 @@ export default function About() {
         </div>
       </div>
 
-      <div className="contributions">
-        <h3>GitHub Contributions</h3>
-        <img
-          src={about.contributions_chart}
-          alt="GitHub Contribution Chart"
-        />
-      </div>
-
       <div className="info-section">
         {infoCards.map((card) => (
           <div key={card.title} className="info-card">

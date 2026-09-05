@@ -68,6 +68,10 @@ export default function FullPage({ children }) {
   // Wheel
   useEffect(() => {
     function onWheel(e) {
+      // A horizontal-dominant gesture (trackpad swipe, shift+wheel) is meant
+      // for something inside the slide (e.g. a carousel) — leave it alone
+      // rather than treating deltaY=0 as "scroll up" and swallowing it.
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
       const dir = e.deltaY > 0 ? 1 : -1;
       const el = slideEls.current[indexRef.current];
       const absDelta = Math.abs(e.deltaY);
@@ -113,13 +117,17 @@ export default function FullPage({ children }) {
     return () => window.removeEventListener("wheel", onWheel);
   }, [goTo]);
 
-  // Touch — a swipe only advances if it *started* at the section's edge.
+  // Touch — a swipe only advances if it *started* at the section's edge, and
+  // only when the drag is predominantly vertical (a horizontal drag is meant
+  // for something inside the slide, e.g. a carousel).
   useEffect(() => {
+    let startX = null;
     let startY = null;
     let startEl = null;
     let edgeDown = false;
     let edgeUp = false;
     function onStart(e) {
+      startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
       startEl = slideEls.current[indexRef.current];
       edgeDown = atEdge(startEl, 1);
@@ -127,14 +135,22 @@ export default function FullPage({ children }) {
     }
     function onMove(e) {
       if (startY === null) return;
-      const dir = startY - e.touches[0].clientY > 0 ? 1 : -1;
+      const dx = e.touches[0].clientX - startX;
+      const dy = startY - e.touches[0].clientY;
+      if (Math.abs(dx) > Math.abs(dy)) return;
+      const dir = dy > 0 ? 1 : -1;
       if (atEdge(startEl, dir)) e.preventDefault();
     }
     function onEnd(e) {
       if (startY === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
       const dy = startY - e.changedTouches[0].clientY;
       const dir = dy > 0 ? 1 : -1;
-      if (Math.abs(dy) > 50 && ((dir > 0 && edgeDown) || (dir < 0 && edgeUp))) {
+      if (
+        Math.abs(dy) > 50 &&
+        Math.abs(dy) > Math.abs(dx) &&
+        ((dir > 0 && edgeDown) || (dir < 0 && edgeUp))
+      ) {
         goTo(indexRef.current + dir);
       }
       startY = null;

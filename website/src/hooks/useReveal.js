@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 
+const THRESHOLD = 0.18;
+
 // Reveal-on-scroll: returns a ref to attach to an element and a boolean that
-// flips true once the element scrolls into view. Used to drive the
-// fade/slide transitions between sections. Respects reduced-motion by
-// revealing immediately.
-export function useReveal({ threshold = 0.18, once = true } = {}) {
+// flips true once the element scrolls into view (and stays true). Used to
+// drive the fade/slide transitions between sections. Respects
+// reduced-motion by revealing immediately.
+export function useReveal() {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -24,17 +26,15 @@ export function useReveal({ threshold = 0.18, once = true } = {}) {
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
-          if (once) observer.unobserve(el);
-        } else if (!once) {
-          setVisible(false);
+          observer.unobserve(el);
         }
       },
-      { threshold },
+      { threshold: THRESHOLD },
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [threshold, once]);
+  }, []);
 
   return { ref, visible };
 }

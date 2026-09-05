@@ -21,7 +21,8 @@ starfield with light/dark theming.
 
 All site copy lives in [`content.yaml`](content.yaml) at the project root — you
 should never need to touch the components to change text, links, cards, or
-projects. The file is imported through [`src/content.js`](src/content.js) and
+projects. The file is imported through
+[`website/src/content.js`](website/src/content.js) and
 bundled at build time, so:
 
 - `npm run dev` hot-reloads the moment you save the YAML.
@@ -72,19 +73,24 @@ npm run lint     # oxlint
 
 ```
 content.yaml              # all editable site copy (see "Editing content")
-src/
-  content.js              # imports content.yaml and exposes the sections
-  App.jsx                 # composes the page
-  components/
-    FullPage.jsx          # full-page scroll/transition controller
-    Header.jsx, ThemeToggle.jsx
-    Hero.jsx, About.jsx, Projects.jsx, Contact.jsx, Footer.jsx
-    Section.jsx           # reveal-on-scroll section wrapper
-    Starfield.jsx, Particles.jsx, LightBackground.jsx
-  hooks/
-    useTheme.js           # theme state + persistence
-    useReveal.js          # IntersectionObserver reveal hook
-  index.css               # all styles + design tokens
+index.html                # portfolio entry point
+website/
+  src/
+    content.js            # imports content.yaml and exposes the sections
+    App.jsx               # composes the page
+    components/
+      FullPage.jsx        # full-page scroll/transition controller
+      Header.jsx, ThemeToggle.jsx
+      Hero.jsx, About.jsx, Projects.jsx, Contact.jsx, Footer.jsx
+      Section.jsx         # reveal-on-scroll section wrapper
+      Starfield.jsx, Particles.jsx, LightBackground.jsx
+    hooks/
+      useTheme.js         # theme state + persistence
+      useReveal.js        # IntersectionObserver reveal hook
+    index.css             # all styles + design tokens
+sub-tiles.html            # Sub-Tiles entry point, served at /sub-tiles
+sub-tiles/
+  src/                    # self-contained — own components, own CSS
 public/images/            # profile photo and social icons
 ```
 

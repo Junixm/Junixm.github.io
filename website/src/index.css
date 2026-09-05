@@ -21,7 +21,6 @@
   --bg: #0a0a14;
   --bg-header: rgba(10, 10, 20, 0.7);
   --text: #ffffff;
-  --text-muted: rgba(255, 255, 255, 0.55);
   --border: rgba(138, 43, 226, 0.3);
   --btn-bg: rgba(138, 43, 226, 0.2);
   --btn-hover-bg: rgba(138, 43, 226, 0.4);
@@ -38,7 +37,6 @@
   --bg: #f5f3ff;
   --bg-header: rgba(245, 243, 255, 0.85);
   --text: #1a0a2e;
-  --text-muted: rgba(26, 10, 46, 0.5);
   --border: rgba(138, 43, 226, 0.25);
   --btn-bg: rgba(138, 43, 226, 0.1);
   --btn-hover-bg: rgba(138, 43, 226, 0.2);
@@ -503,11 +501,7 @@ body {
   opacity: 0;
 }
 
-/* ── Page + sections ── */
-.page {
-  width: 100%;
-}
-
+/* ── Sections ── */
 .section {
   position: relative;
   z-index: 10;
@@ -709,28 +703,6 @@ body {
   filter: var(--icon-filter);
 }
 
-.secondary-button {
-  display: inline-flex;
-  align-items: center;
-  padding: 14px 28px;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--text);
-  text-decoration: none;
-  background: var(--btn-bg);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  transition:
-    transform 0.25s,
-    background var(--transition);
-}
-
-.secondary-button:hover {
-  transform: translateY(-3px);
-  background: var(--btn-hover-bg);
-}
-
 /* ── Scroll cue (animated) ── */
 .scroll-cue {
   margin: 56px auto 24px;
@@ -837,27 +809,6 @@ body {
     color var(--transition);
 }
 
-.contributions {
-  text-align: center;
-  margin-bottom: 64px;
-}
-
-.contributions h3 {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-  color: var(--text);
-}
-
-.contributions img {
-  max-width: 100%;
-  height: auto;
-  padding: 16px;
-  border-radius: 14px;
-  background: var(--btn-bg);
-  border: 1px solid var(--border);
-}
-
 .info-section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -939,14 +890,58 @@ body {
   text-decoration: underline;
 }
 
-/* ── Projects ── */
+/* ── Projects ──
+   Sized with vh-based clamps so the whole carousel (title + cards + dots)
+   fits within the 100vh section on short viewports instead of scrolling. */
+.projects {
+  padding-top: clamp(64px, 9vh, 96px);
+  padding-bottom: clamp(20px, 4vh, 48px);
+}
+
+.projects .section-title {
+  font-size: clamp(1.7rem, 4.2vh, 2.6rem);
+  margin-bottom: clamp(10px, 2vh, 28px);
+}
+
+/* The down-arrow scroll cue is a fixed-height element in normal flow, and its
+   default margins (tuned for lighter sections like the hero) eat into the
+   carousel's tight vertical budget here. */
+.projects .scroll-cue {
+  margin: 36px auto 12px;
+}
+
+.projects-carousel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  flex: 1;
+  min-width: 0;
+  display: flex;
   gap: 28px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 0;
+  /* Top padding gives the hover lift below room so it isn't clipped by this
+     scroll container (overflow-x: auto forces overflow-y to auto too). */
+  padding: 10px 0 8px;
+  margin: -10px 0 -8px;
+  /* Hide the scrollbar (arrows/dots drive navigation instead) while still
+     allowing native drag/touch/trackpad scrolling. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.projects-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .project-card {
+  flex: 0 0 min(320px, 100%);
+  max-height: 78vh;
+  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   border-radius: 16px;
@@ -957,17 +952,16 @@ body {
   -webkit-backdrop-filter: blur(8px);
   transition:
     transform 0.3s,
-    box-shadow 0.3s,
     border-color var(--transition);
 }
 
 .project-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(138, 43, 226, 0.25);
+  transform: translateY(-4px);
 }
 
 .project-image {
-  height: 180px;
+  flex: 0 0 auto;
+  height: clamp(90px, 18vh, 240px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -975,7 +969,7 @@ body {
   font-weight: 600;
   color: #fff;
   text-align: center;
-  padding: 16px;
+  padding: 8px;
   background: linear-gradient(135deg, var(--purple), var(--purple-light));
 }
 
@@ -983,28 +977,40 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Nest inside the card's own rounded top corners instead of poking out
+     square from the padded purple frame. */
+  border-radius: 8px 8px 0 0;
 }
 
 .project-content {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 24px;
+  min-height: 0;
+  padding: clamp(8px, 1.65vh, 18px);
 }
 
 .project-content h3 {
   font-family: var(--font-display);
   font-size: 1.15rem;
-  margin-bottom: 12px;
+  margin-bottom: clamp(6px, 1.1vh, 12px);
   line-height: 1.35;
 }
 
 .project-content p {
   font-size: 0.95rem;
-  line-height: 1.65;
+  line-height: 1.55;
   font-weight: 300;
   opacity: 0.8;
-  margin-bottom: 20px;
+  margin-bottom: clamp(13px, 2.7vh, 29px);
+  /* Clamp long descriptions to a fixed number of lines so one wordy project
+     can't grow the whole carousel taller than the others — raised now that
+     bigger cards have the room to show more of the text. */
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .project-links {
@@ -1017,7 +1023,7 @@ body {
 .project-link {
   display: inline-flex;
   align-items: center;
-  padding: 10px 22px;
+  padding: clamp(8px, 1.54vh, 14px) clamp(15px, 2.75vw, 29px);
   font-size: 0.88rem;
   font-weight: 600;
   color: #fff;
@@ -1034,6 +1040,68 @@ body {
 .project-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(138, 43, 226, 0.5);
+}
+
+.carousel-arrow {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--btn-bg);
+  color: var(--text);
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    transform 0.2s,
+    border-color var(--transition),
+    box-shadow 0.2s,
+    opacity 0.2s;
+}
+
+.carousel-arrow svg {
+  display: block;
+}
+
+.carousel-arrow:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: var(--purple-light);
+  box-shadow: 0 8px 20px rgba(138, 43, 226, 0.35);
+}
+
+.carousel-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* A scrollbar-style progress track: the thumb's width shows how much of the
+   row is in view and its position shows how far through it you are — a
+   direct read of scroll position, unlike dots which imply discrete "pages"
+   that don't quite match a partial-card carousel. */
+.carousel-slider {
+  position: relative;
+  width: min(240px, 60%);
+  height: 6px;
+  margin: clamp(10px, 2vh, 24px) auto 0;
+  border-radius: 999px;
+  background: var(--border);
+  cursor: pointer;
+}
+
+.carousel-slider-thumb {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  min-width: 24px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--purple), var(--purple-light));
+  pointer-events: none;
+  transition: left 0.15s ease;
 }
 
 /* ── Contact ── */
@@ -1114,10 +1182,9 @@ body {
   .skills {
     justify-content: center;
   }
-  /* Top-align the tall content sections so their heading clears the fixed
-     header instead of being centered up underneath it. */
-  .about,
-  .projects {
+  /* Top-align About (it's tall enough on mobile to need its heading clear of
+     the fixed header) — Projects is compact enough now to stay centered. */
+  .about {
     justify-content: flex-start;
   }
 }
@@ -1136,5 +1203,13 @@ body {
   }
   .site-footer {
     padding: 16px 20px 14px;
+  }
+  .carousel-arrow {
+    width: 36px;
+    height: 36px;
+  }
+  .carousel-arrow svg {
+    width: 16px;
+    height: 16px;
   }
 }
