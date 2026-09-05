@@ -145,10 +145,10 @@ export default function App() {
     else setNotice(TEXT.placeInGrid);
   };
   const beginDrag = (r,c) => {
+    dragOrigin.current = key(r,c);
     const value = board[r][c];
     if (value && counts[value - 1] < value) {
       draggedThisTurn.current = false;
-      dragOrigin.current = key(r,c);
       dragChain.current = [];
       setDragging(value);
       return;
@@ -160,7 +160,6 @@ export default function App() {
       const hasFriend = counts[selected - 1] === 0 || steps.some(([dr,dc]) => board[r+dr]?.[c+dc] === selected);
       if (hasFriend) {
         draggedThisTurn.current = true;
-        dragOrigin.current = key(r,c);
         dragChain.current = [];
         setDragging(selected);
         update(r,c,selected);
@@ -198,6 +197,16 @@ export default function App() {
       draggedThisTurn.current = true;
       update(r,c,dragging);
     }
+  };
+  // Touch implicitly captures the pointer to the cell where the drag started,
+  // so pointermove keeps firing on that cell instead of the ones underneath
+  // the finger. Hit-testing by coordinate instead of relying on pointerenter
+  // works regardless of that capture, and stays correct across repeated drags.
+  const handleBoardPointerMove = e => {
+    if (!dragging) return;
+    const cellEl = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-r]');
+    if (!cellEl) return;
+    paint(Number(cellEl.dataset.r), Number(cellEl.dataset.c));
   };
   const handleCellClick = (r,c) => {
     if (draggedThisTurn.current) { draggedThisTurn.current = false; return; }
@@ -249,8 +258,8 @@ export default function App() {
     <section className="workspace">
       <div className="board-wrap">
         <div className="board-meta"><span>{TEXT.gridLabel(SIZE)}</span><span>{TEXT.tilesLabel(counts.reduce((a,b) => a+b, 0), totalTiles)}</span></div>
-        <div className="board" style={{gridTemplateColumns: `repeat(${SIZE}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${SIZE}, minmax(0, 1fr))`}}>
-          {board.map((row,r) => row.map((value,c) => <button key={key(r,c)} style={value ? { backgroundColor: clueColor(value, limit) } : undefined} className={`cell ${value ? 'tile' : ''} ${value && board[r - 1]?.[c] === value ? 'join-top' : ''} ${value && board[r][c + 1] === value ? 'join-right' : ''} ${value && board[r + 1]?.[c] === value ? 'join-bottom' : ''} ${value && board[r][c - 1] === value ? 'join-left' : ''} ${seeds.has(key(r,c)) ? 'seed' : ''}`} onClick={() => handleCellClick(r,c)} onPointerDown={() => beginDrag(r,c)} onPointerEnter={() => paint(r,c)} aria-label={TEXT.cellAriaLabel(r, c, value)}>
+        <div className="board" style={{gridTemplateColumns: `repeat(${SIZE}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${SIZE}, minmax(0, 1fr))`}} onPointerMove={handleBoardPointerMove}>
+          {board.map((row,r) => row.map((value,c) => <button key={key(r,c)} data-r={r} data-c={c} style={value ? { backgroundColor: clueColor(value, limit) } : undefined} className={`cell ${value ? 'tile' : ''} ${value && board[r - 1]?.[c] === value ? 'join-top' : ''} ${value && board[r][c + 1] === value ? 'join-right' : ''} ${value && board[r + 1]?.[c] === value ? 'join-bottom' : ''} ${value && board[r][c - 1] === value ? 'join-left' : ''} ${seeds.has(key(r,c)) ? 'seed' : ''}`} onClick={e => { if (e.detail === 0) handleCellClick(r,c); }} onPointerDown={() => beginDrag(r,c)} onPointerUp={() => { if (dragOrigin.current === key(r,c)) handleCellClick(r,c); }} aria-label={TEXT.cellAriaLabel(r, c, value)}>
             {value ? <><strong>{value}</strong>{seeds.has(key(r,c)) && <i className="lock">◆</i>}</> : <i/>}</button>))}
         </div>
       </div>
